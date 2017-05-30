@@ -36,7 +36,6 @@
 <div class = "main-contents">
 
 
-
 	<c:if test = "${ not empty loginUser}">
 		<h2><c:out value = "${loginUser.name}" />さんがログインしています</h2><br />
 		<c:if test="${loginUser.department_id==1}">
@@ -65,7 +64,7 @@
 
 						<SELECT name="category">
 						<OPTION value=""></OPTION>
-						<c:forEach items="${messagesCategory}" var="messageC">
+						<c:forEach items="${categoryList}" var="messageC">
 
 							<OPTION value="${messageC.category}">${messageC.category}</OPTION>
 
@@ -91,7 +90,7 @@
 				<h4>投稿者　　：　<c:out value="${message.name}" /></h4>
 				<h4>投稿日時<fmt:formatDate value = "${message.insertDate }" pattern = "yyyy/MM/dd HH:mm:ss" /></h4><br />
 
-				<c:if test="${loginUser.department_id==2}">
+				<c:if test="${loginUser.department_id==2||loginUser.department_id==3&&message.branch_id==loginUser.branch_id}">
 					<form action = "messageDelete" method = "post">
 		 			<button id = "md" type = "submit" name="md" value="md">削除</button>
 		 			<input type = "hidden" name = "messageDelete" value = "${message.id}">
@@ -109,7 +108,7 @@
 						投稿者　  ：<c:out value="${comment.name}" /><br>
 						投稿日時<fmt:formatDate value = "${comment.insertDate }" pattern = "yyyy/MM/dd HH:mm:ss" /><br />
 						<br>
-						<c:if test="${loginUser.department_id==2}">
+						<c:if test="${loginUser.department_id==2||loginUser.department_id==3&&comment.branch_id==loginUser.branch_id}">
 							<form action = "commentDelete" method = "post">
 
 			 				<button id = "cd" type = "submit" name="cd" value="cd">削除</button>
@@ -125,7 +124,7 @@
 						<input type = "hidden" name = "user_id" value = "${loginUser.id}">
 						<h3>コメントする</h3><br />
 						本文<br />
-						<textarea name="body" class="body${message.id}" cols="50" rows="10" onkeyup="CountDownLength( 'cdlength${message.id}' , value , 500 );"></textarea>
+						<textarea name="body" class="body${message.id}" cols="50" rows="10" onkeyup="CountDownLength( 'cdlength${message.id}' , value , 500 );">${serchBody}</textarea>
 						<p id="cdlength${message.id}">あと500文字</p>
 						<script type="text/javascript"><!--
 						function CountDownLength( idn, str, mnum ) {

@@ -35,32 +35,44 @@ public class SettingServlet extends HttpServlet  {
 		List<Department> departments = new DepartmentService().getDepartmentList();
 		List<UserList> user = new UserService().getUserList();
 		request.setAttribute("branches",branches);
+		request.setAttribute("departments",departments);
+
 		HttpSession session = request.getSession();
 
 
 		System.out.println(request.getParameter("id")+"←id");
-		int userId = Integer.parseInt(request.getParameter("id"));
-		System.out.println(user.get(userId).getId());
-		if(user.get(userId)==null){
 
+		//idがデータ内になければエラーを出して戻す
+
+		if(request.getParameter("id").matches("\\D+")){
 
 			List<String> errorMessage =  new ArrayList<String>();
 			errorMessage.add("存在しないアカウントです");
 			session.setAttribute("errorMessage", errorMessage);
 
+			request.setAttribute("userList", user);
 
 			request.getRequestDispatcher("management.jsp").forward(request, response);
 			return ;
+		}
 
 
+		int userId = Integer.parseInt(request.getParameter("id"));
+		User editUser = new UserService().getUser(userId);
+		if(editUser==null){
+			List<String> errorMessage =  new ArrayList<String>();
+			errorMessage.add("存在しないアカウントです");
+			session.setAttribute("errorMessage", errorMessage);
+
+			request.setAttribute("userList", user);
+
+			response.sendRedirect("management");
+			return ;
 
 		}
-		User editUser = new UserService().getUser(userId);
 		request.setAttribute("userList", editUser);
 
 		request.getRequestDispatcher("settings.jsp").forward(request, response);
-
-
 	}
 
 	@Override
@@ -78,6 +90,23 @@ public class SettingServlet extends HttpServlet  {
 		User editUser = getEditUser(request,response);
 		List<Branch> branches = new BranchService().getBranchList();
 		List<Department> departments = new DepartmentService().getDepartmentList();
+		//値保持
+				String nameSerch = request.getParameter("name");
+				String loginSerch = request.getParameter("login_id");
+				int branchSerch = Integer.parseInt(request.getParameter("branch_id"));
+				int departmentSerch = Integer.parseInt(request.getParameter("department_id"));
+				//String branches = request.getParameter("branches");
+
+
+				request.setAttribute("serchName",nameSerch);
+				request.setAttribute("serchLogin",loginSerch);
+				request.setAttribute("serchDepartment",departmentSerch);
+				request.setAttribute("serchBranch",branchSerch);
+				request.setAttribute("branches", branches);
+				request.setAttribute("departments", departments);
+
+
+
 		session.setAttribute("editUser", editUser);
 
 		if (isValid(request,messages) == true) {
@@ -166,7 +195,7 @@ public class SettingServlet extends HttpServlet  {
 		}
 
 		//パスワードの処理
-		if(!(password==null)||(password=="")){
+		if(password.isEmpty()==false){
 			if (! password.matches("^[a-zA-Z0-9 -/:-@]{6,255}+$")){
 				messages.add("パスワードが不正です。使える文字は記号を含む半角文字でかつ６桁以上です。");
 			}else if (! password.equals(password2)){

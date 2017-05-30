@@ -68,13 +68,39 @@ public class MessageService {
 	public static List<UserMessage> getMessage() {
 
 		Connection connection  = null;
-		System.out.println("メッセージサービスのゲットメッセージなう引数なし");
+		System.out.println("メッセージサービスのゲットメッセージなう");
 
 		try {
 			connection = getConnection();
 
 			UserMessageDao messageDao = new UserMessageDao();
 			List<UserMessage> ret = messageDao.getUserMessages(connection);
+
+			commit(connection);
+
+			return ret;
+
+
+		} catch (RuntimeException e) {
+			rollback(connection);
+			throw e;
+		} catch (Error e) {
+			rollback(connection);
+			throw e;
+		} finally {
+			close(connection);
+		}
+	}
+	public static List<UserMessage> getCategory() {
+
+		Connection connection  = null;
+		System.out.println("メッセージサービスのゲットメッセージなう引数なし");
+
+		try {
+			connection = getConnection();
+
+			UserMessageDao messageDao = new UserMessageDao();
+			List<UserMessage> ret = messageDao.getCategory(connection);
 
 			commit(connection);
 

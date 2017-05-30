@@ -72,6 +72,70 @@ public class UserMessageDao {
 			close(ps);
 		}
 	}
+	public List <UserMessage> getMessages(Connection connection) {
+
+		PreparedStatement ps = null;
+		System.out.println("userMessageだおのげっとゆーざーめっせーじす引数なし");
+		try {
+			StringBuilder sql = new StringBuilder ();
+
+
+			sql.append("SELECT * FROM user_messages  ");
+
+			ps = connection.prepareStatement(sql.toString());
+			System.out.println(ps.toString()+"PSだお");
+
+			ResultSet rs = ps.executeQuery();
+			List <UserMessage> ret =toUserMessageList(rs);
+			return ret;
+		} catch (SQLException e) {
+			throw new SQLRuntimeException(e);
+
+		} finally {
+			close(ps);
+		}
+	}
+
+	public List <UserMessage> getCategory(Connection connection) {
+
+		PreparedStatement ps = null;
+		try {
+			StringBuilder sql = new StringBuilder ();
+
+
+			sql.append("SELECT category FROM user_messages  ");
+			sql.append(" GROUP BY category ");
+
+			ps = connection.prepareStatement(sql.toString());
+			System.out.println(ps.toString()+"PSだお");
+
+			ResultSet rs = ps.executeQuery();
+			List <UserMessage> ret =toCategoryList(rs);
+			return ret;
+		} catch (SQLException e) {
+			throw new SQLRuntimeException(e);
+
+		} finally {
+			close(ps);
+		}
+	}
+
+	private List <UserMessage> toCategoryList(ResultSet rs) throws SQLException {
+
+		List<UserMessage> ret = new ArrayList<UserMessage>();
+		try{
+			while(rs.next()){
+				String category = rs.getString("category");
+				UserMessage categoryes = new UserMessage();
+				categoryes.setCategory(category);
+				ret.add(categoryes);
+			}
+			return ret;
+		} finally{
+			close(rs);
+		}
+
+	}
 
 	private List <UserMessage> toUserMessageList(ResultSet rs) throws SQLException {
 
@@ -85,6 +149,7 @@ public class UserMessageDao {
 				int user_id = rs.getInt("user_id");
 				String name = rs.getString("name");
 				Timestamp insertDate = rs.getTimestamp("insert_date");
+				int branch_id = rs.getInt("branch_id");
 
 				UserMessage message = new UserMessage();
 				message.setTitle(title);
@@ -94,6 +159,7 @@ public class UserMessageDao {
 				message.setUser_Id(user_id);
 				message.setName(name);
 				message.setInsertDate(insertDate);
+				message.setBranch_id(branch_id);
 
 				ret.add(message);
 			}

@@ -37,96 +37,7 @@ public class SignUpServlet extends HttpServlet {
 		request.getRequestDispatcher("signup.jsp").forward(request, response);
 	}
 
-	/*@Override
-	protected void doPost(HttpServletRequest request,HttpServletResponse response)
-	throws IOException,ServletException {
 
-		List<String> messages = new ArrayList<String>();
-
-		HttpSession session = request.getSession();
-		int b = Integer.parseInt(request.getParameter("branch_id"));
-		int d = Integer.parseInt(request.getParameter("department_id"));
-		if (isValid (request, messages) == true) {
-
-			User user = new User();
-			if(!(request.getParameter("login_id")).matches("[0-9a-zA-Z]{6,20}")){
-			    System.out.println("不一致");
-
-			}else{
-			    System.out.println("一致");
-			    user.setLogin_id(request.getParameter("login_id"));
-
-			}
-			if(!(request.getParameter("password")).matches("^[a-zA-Z0-9 -/:-@]{6,255}+$")){
-			    System.out.println("不一致");
-			    request.getRequestDispatcher("signup").forward(request, response);
-
-			}else{
-			    System.out.println("一致");
-			    user.setPassword(request.getParameter("password"));
-
-			}
-			int size =(request.getParameter("name").length());
-			if(size > 11){
-			    System.out.println("不一致");
-			    request.getRequestDispatcher("signup").forward(request, response);
-
-			}else{
-			    System.out.println("一致");
-			    user.setPassword(request.getParameter("name"));
-			}
-
-
-			System.out.println(b+"←B");
-			System.out.println(d+"←D");
-			if(b==1 && d>2){
-				System.out.println("店と所属の組み合わせおかしい");
-				 response.sendRedirect("signup");
-
-
-			}else if(b>=2&&d>3){
-				System.out.println("店と所属の組み合わせおかしい");
-				 request.getRequestDispatcher("signup").forward(request, response);
-
-			}
-
-			user.setName(request.getParameter("name"));
-			user.setBranch_id(request.getParameter("branch_id"));
-			user.setDepartment_id(request.getParameter("department_id"));
-
-			new UserService().register(user);
-
-			response.sendRedirect("management");
-
-		} else {
-			session.setAttribute("errorMessages", messages);
-			response.sendRedirect("signup");
-		}
-	}
-
-	private boolean isValid (HttpServletRequest request, List<String>messages){
-
-		String login_id = request.getParameter("login_id");
-		String password = request.getParameter("password");
-
-		if (StringUtils.isEmpty(login_id) == true) {
-			messages.add("ログインIDを入力してください");
-
-		}
-
-		if (StringUtils.isEmpty(password) == true) {
-			messages.add("パスワードを入力してください");
-		}
-
-		//TODO　アカウントがすでに利用されていないか、メールアドレスがすでに登録されていないかなどの確認も必要
-		if (messages.size() == 0) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-}*/
 
 	@Override
 	protected void doPost(HttpServletRequest request,HttpServletResponse response)
@@ -135,6 +46,24 @@ public class SignUpServlet extends HttpServlet {
 		List<String> messages = new ArrayList<String>();
 
 		HttpSession session = request.getSession();
+
+		//値保持
+		String nameSerch = request.getParameter("name");
+		String loginSerch = request.getParameter("login_id");
+		String passwordSerch = request.getParameter("password");
+		String branchSerch = request.getParameter("branch_id");
+		String departmentSerch = request.getParameter("department_id");
+		request.setAttribute("serchName",nameSerch);
+		request.setAttribute("serchLogin",loginSerch);
+		request.setAttribute("serchPassword",passwordSerch);
+		request.setAttribute("serchDepartment",departmentSerch);
+		request.setAttribute("serchBranch",branchSerch);
+
+
+		List<Branch> branches = new BranchService().getBranchList();
+		List<Department> departments = new DepartmentService().getDepartmentList();
+		request.setAttribute("branches",branches);
+		request.setAttribute("departments",departments);
 
 		if (isValid (request, messages) == true) {
 
@@ -152,7 +81,7 @@ public class SignUpServlet extends HttpServlet {
 
 		} else {
 			session.setAttribute("errorMessage", messages);
-			response.sendRedirect("signup");
+			request.getRequestDispatcher("signup.jsp").forward(request, response);
 		}
 	}
 

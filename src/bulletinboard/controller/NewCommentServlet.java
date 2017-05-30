@@ -32,6 +32,8 @@ public class NewCommentServlet extends HttpServlet {
 	throws IOException,ServletException {
 		HttpSession session = request.getSession();
 		List<String> messages = new ArrayList<String>();
+		String bodySerch = request.getParameter("body");
+		request.setAttribute("serchBody",bodySerch);
 		if (isValid(request, messages) == true) {
 			Comments comment = new Comments();
 

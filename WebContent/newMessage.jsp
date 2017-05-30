@@ -27,8 +27,8 @@
 	<c:remove var = "errorMessage" scope = "session"/>
 </c:if>
 
-	題名<br />
-	<textarea name="title"cols="24" rows="3" class="title" onkeyup="CountDownLength( 'cdlength2' , value , 100 );"></textarea>
+	タイトル<br />
+	<textarea name="title"cols="24" rows="3" class="title" onkeyup="CountDownLength( 'cdlength2' , value , 100 );">${serchTitle}</textarea>
 						<p id="cdlength2">あと100文字</p>
 						<script type="text/javascript"><!--
 						function CountDownLength( idn, str, mnum ) {
@@ -37,8 +37,8 @@
 						// --></script>
 	カテゴリ<br />
 
-	<textarea name="category"cols="24" rows="3" class="category" onkeyup="CountDownLength( 'cdlength1' , value , 20 );"></textarea>
-						<p id="cdlength1">あと20文字</p>
+	<textarea name="category"cols="24" rows="3" class="category" onkeyup="CountDownLength( 'cdlength1' , value , 10 );">${serchCategory}</textarea>
+						<p id="cdlength1">あと10文字</p>
 						<script type="text/javascript"><!--
 						function CountDownLength( idn, str, mnum ) {
 						   document.getElementById(idn).innerHTML = "あと" + (mnum - str.length) + "文字";
@@ -46,7 +46,7 @@
 						// --></script>
 						<br>
 	本文<br />
-	<textarea name="body"cols="50" rows="20" class="body"  onkeyup="CountDownLength( 'cdlength3' , value , 1000 );"></textarea>
+	<textarea name="body"cols="50" rows="20" class="body"  onkeyup="CountDownLength( 'cdlength3' , value , 1000 );">${serchBody}</textarea>
 						<p id="cdlength3">あと1000文字</p>
 						<script type="text/javascript"><!--
 						function CountDownLength( idn, str, mnum ) {

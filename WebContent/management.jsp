@@ -8,19 +8,23 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>ユーザー管理画面</title>
-<link href = "./css/style.css" rel = "stylesheet" type = "text/css">
+
 <script type="text/javascript">
 
-function confirm() {
-    if (window.confirm('実行しますか？')) {
-        return true;
-    }
-    return false;
-}
+	function stop() {
+	    return window.confirm('停止します。よろしいですか？');
+	}
+	function revive() {
+	    return window.confirm('復活します。よろしいですか？');
+	}
+	function deleted() {
+	    return window.confirm('削除します。よろしいですか？');
+	}
 
 </script>
 </head>
 <body>
+
 <div class = "header">
 	<h1>ユーザー管理画面</h1>
 	<c:if test = "${ empty loginUser}">
@@ -87,14 +91,14 @@ function confirm() {
 
 			 	<c:if test="${userList.is_stopped==0}">
 				 	<form action ="management" method = "post">
-				 	<button id = "b" type="submit" value="1" >停止</button>
+				 	<input id = "b" type="submit" value="停止" onClick="return stop();" >
 				 	<input type="hidden" name="id" value ="${userList.id}" >
 				 	<input type="hidden" name="stopped" value ="1" >
 				 	</form>
 				 </c:if>
 				 <c:if test="${userList.is_stopped==1}">
 				 	<form action ="management" method = "post">
-				 	<button id = "b" type = "submit" name="a" value="0" >復活</button>
+				 	<input id = "b" type = "submit" name="a" value="復活" onClick="return revive();" >
 				 	<input type="hidden" name="id" value ="${userList.id}" >
 				 	<input type="hidden" name="stopped" value ="0" >
 				 	</form>
@@ -102,11 +106,13 @@ function confirm() {
 
 
 			 	<form action = "delete" method = "post">
-			 	<button id = "c" type = "submit" name="a" value="cart1">削除</button>
+			 	<input id = "c" type = "submit" name="a" value="削除" onClick="return deleted();">
 			 	<input type = "hidden" name = "delete" value = "${userList.id}">
 
 
+
 			 	</form>
+
 			 	 </td>
 			 	</tr>
 				<br />

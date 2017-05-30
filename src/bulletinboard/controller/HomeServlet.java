@@ -22,14 +22,16 @@ import bulletinboard.service.UserService;
 public class HomeServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	@SuppressWarnings("unused")
+
 	@Override
 	protected void doGet(HttpServletRequest request ,HttpServletResponse response)
 			throws IOException, ServletException {
 		System.out.println("～～～～～～ここから～～～～～～");
 		System.out.println("ホームサーブレットdoGetなう");
 		List<UserList> user = new UserService().getUserList();
+		//List<UserMessage> message = new UserService().getMessage();
 		request.setAttribute("userList", user);
+		//request.setAttribute("messageList", message);
 
 		String start = request.getParameter("start_day");
 		if(start == null){
@@ -38,16 +40,18 @@ public class HomeServlet extends HttpServlet {
 			start = ("2017-05-01");
 		}
 		String end  = request.getParameter("end_day");
-		end+=("235959");
 		if(end == null){
 			Calendar cal = Calendar.getInstance();
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-hh:mm");
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
 
 			end = sdf.format(cal.getTime());
+			end +=  (" 23:59:59");
 		}else if(end.isEmpty()){
 			 Calendar cal = Calendar.getInstance();
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-hh:mm");
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 			end = sdf.format(cal.getTime());
+			end +=  (" 23:59:59");
 		}
 		//String category = request.getParameter("category");
 
@@ -61,8 +65,8 @@ public class HomeServlet extends HttpServlet {
 		System.out.println(start+"←start");
 		System.out.println(category+"←category");
 		new MessageService();
-		List<UserMessage> messagesCategory = MessageService.getMessage();
-		request.setAttribute("messagesCategory", messagesCategory);
+		List<UserMessage> messagesCategory = MessageService.getCategory();
+		request.setAttribute("categoryList", messagesCategory);
 
 		List<UserMessage> messages = new UserService().getMessage(start,end,category);
 		request.setAttribute("messages", messages);

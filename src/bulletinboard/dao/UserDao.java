@@ -390,6 +390,44 @@ public class UserDao {
 
 	}
 
+	public void messageDeleteBranch(Connection connection,int messageId,int branchId) {
+
+		PreparedStatement ps = null;
+		System.out.println("ok4");
+		try {
+			StringBuilder sql = new StringBuilder();
+			sql.append("DELETE FROM user_messages");
+			sql.append(" WHERE");
+			sql.append(" id = ? ");
+			sql.append(" branch_id = ?; ");
+
+
+			System.out.println(messageId+"ok4.25");
+			ps = connection.prepareStatement(sql.toString());
+			ps.setInt(1,  messageId);
+			ps.setInt(2, branchId);
+
+			System.out.println(ps);
+
+			int count = ps.executeUpdate();
+			System.out.println("ok4.4");
+			if (count == 0) {
+				System.out.println("no99");
+				throw new NoRowsUpdatedRuntimeException();
+			}
+			System.out.println("ok4.5");
+
+
+		} catch (SQLException e) {
+			System.out.println(e);
+			throw new SQLRuntimeException(e);
+
+		} finally {
+			close(ps);
+		}
+
+	}
+
 	public void commentDelete(Connection connection,int commentId) {
 
 		PreparedStatement ps = null;

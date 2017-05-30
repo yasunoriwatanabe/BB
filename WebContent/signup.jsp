@@ -24,15 +24,15 @@
 
 <form action = "signup" method = "post"><br />
 	<label for = "name"> 名前 </label>
-	<input name = "name" id = "name"/>(名前はあなたの公開プロフィールに表示されます)<br />
+	<input name = "name" id = "name" value="${serchName}"/><br />
 
 	<label for = "login_id">ログインID</label>
-	<input name = "login_id" id = "login_id"/>
+	<input name = "login_id" id = "login_id" value="${serchLogin}"/>
 	<br />
 
 	<label for = "password">パスワード</label>
 
-	<input name = "password" type = "password" id = "password"/><br />
+	<input name = "password" type = "password" id = "password" /><br />
 	<%--確認入力用 --%>
 	<label for = "password2">パスワード</label>
 
@@ -41,15 +41,24 @@
 
 	支店名<SELECT name="branch_id">
 		<c:forEach items="${branches}" var="branch">
+			<c:if test="${serchBranch==branch.id}">
+				<OPTION value="${branch.id}" selected>${branch.name}</OPTION>
+			</c:if>
+			<c:if test="${serchBranch!=branch.id}">
+				<OPTION value="${branch.id}">${branch.name}</OPTION>
+			</c:if>
 
-			<OPTION value="${branch.id}">${branch.name}</OPTION>
 		</c:forEach>
 	</SELECT>
 
 	所属<SELECT name="department_id">
 		<c:forEach items="${departments}" var="department">
-
-			<OPTION value="${department.id}">${department.name}</OPTION>
+			<c:if test="${serchDepartment==department.id}">
+				<OPTION value="${department.id}" selected>${department.name}</OPTION>
+			</c:if>
+			<c:if test="${serchDepartment!=department.id}">
+				<OPTION value="${department.id}">${department.name}</OPTION>
+			</c:if>
 		</c:forEach>
 
 	</SELECT>

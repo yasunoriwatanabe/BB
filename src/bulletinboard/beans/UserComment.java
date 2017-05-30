@@ -10,6 +10,7 @@ public class UserComment {
 	private String name;
 	private int message_id;
 	private Date insertDate;
+	private int branch_id;
 	public int getId() {
 		return id;
 	}
@@ -40,6 +41,12 @@ public class UserComment {
 	}
 	public void setMessage_id(int message_id) {
 		this.message_id = message_id;
+	}
+	public int getBranch_id() {
+		return branch_id;
+	}
+	public void setBranch_id(int branch_id) {
+		this.branch_id = branch_id;
 	}
 
 }

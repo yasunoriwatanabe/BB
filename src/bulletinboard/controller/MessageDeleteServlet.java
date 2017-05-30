@@ -25,6 +25,7 @@ public class MessageDeleteServlet extends HttpServlet {
 			System.out.println("OK");
 
 
+
 		response.sendRedirect("./");
 
 	}

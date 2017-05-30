@@ -12,6 +12,7 @@ public class UserMessage implements Serializable {
 	private String body;
 	private String category;
 	private Date insertDate;
+	private int branch_id;
 	private int  user_Id;
 
 
@@ -56,6 +57,12 @@ public class UserMessage implements Serializable {
 	}
 	public void setCategory(String category) {
 		this.category = category;
+	}
+	public int getBranch_id() {
+		return branch_id;
+	}
+	public void setBranch_id(int branch_id) {
+		this.branch_id = branch_id;
 	}
 
 

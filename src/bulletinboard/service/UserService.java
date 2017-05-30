@@ -203,6 +203,25 @@ public class UserService {
 			close(connection);
 		}
 	}
+	public void messageDeleteBranch (int messageId,int branchId) {
+		Connection connection = null;
+		try {
+			connection = getConnection();
+			UserDao userDao = new UserDao();
+			userDao.messageDeleteBranch(connection, messageId,branchId);
+
+			commit(connection);
+
+		} catch (RuntimeException e) {
+			rollback(connection);
+			throw e;
+		} catch (Error e) {
+			rollback(connection);
+			throw e;
+		} finally {
+			close(connection);
+		}
+	}
 
 	public void commentDelete (int commentId) {
 		Connection connection = null;
@@ -233,6 +252,30 @@ public class UserService {
 
 			UserMessageDao userMessageDao = new UserMessageDao();
 			List<UserMessage> ret = userMessageDao.getUserMessages(connection, LIMIT_NUM, start, end,category);
+
+
+			commit(connection);
+
+			return ret;
+		} catch (RuntimeException e){
+			rollback (connection);
+			throw e;
+		} catch (Error e) {
+			rollback (connection);
+			throw e;
+ 		} finally{
+ 			close (connection);
+ 		}
+
+	}
+
+	public List<UserMessage> getMessage(){
+		Connection connection = null;
+		try {
+			connection = getConnection();
+
+			UserMessageDao userMessageDao = new UserMessageDao();
+			List<UserMessage> ret = userMessageDao.getUserMessages(connection);
 
 
 			commit(connection);
